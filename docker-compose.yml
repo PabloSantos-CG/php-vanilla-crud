@@ -12,20 +12,20 @@ services:
       DB_HOST: db
       DB_PORT: 3306
       DB_DATABASE: my_db
-      DB_USERNAME: root
-      DB_PASSWORD: 
+      DB_USERNAME: php-crud
+      DB_PASSWORD: 123
     networks:
       - appnet
 
   db:
-    image: mysql:8.0
+    image: mysql:9.3.0
     container_name: my_mysql
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: rootsenha
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: my_db
-      MYSQL_USER: usuario
-      MYSQL_PASSWORD: senha
+      MYSQL_USER: php-crud
+      MYSQL_PASSWORD: 123
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
