@@ -1,3 +1,3 @@
 <?php
 
-echo 'funcionas';
+echo 'http://www.'.$_GET['url'];
