@@ -1,3 +1,7 @@
 <?php
 
-echo 'http://www.'.$_GET['url'];
+
+if (isset($_GET['url']) && $_GET['url'] === 'ping') {
+    header('Content-Type: application/json');
+    echo json_encode(['ping' => 'pong']);
+}
