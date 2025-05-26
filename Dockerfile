@@ -15,11 +15,11 @@ WORKDIR /var/www/html
 # Copia os arquivos de dependência primeiro para otimizar cache do docker
 # COPY composer.json composer.lock ./
 
-# Instala as dependências do composer
-# RUN composer install --no-interaction --optimize-autoloader
-
 # Copia o restante do código (src, public, etc)
 COPY . .
+
+# Instala as dependências do composer
+RUN composer install --no-interaction --optimize-autoloader
 
 # Ajusta permissões (opcional, mas evita problemas de acesso)
 RUN chown -R www-data:www-data /var/www/html
