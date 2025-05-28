@@ -9,6 +9,6 @@ Este projeto partiu  de um interesse meu em fazer algo com o básico que já sei
 Este projeto foi feito com  docker para que facilitasse o uso por terceiros.
 
 ```bash
-docker-compose up -d
+docker compose up -d
 
 http://localhost:8080
