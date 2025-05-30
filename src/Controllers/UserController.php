@@ -2,12 +2,15 @@
 
 namespace App\Controllers;
 
+use App\Requeste\Request;
+use App\Response\Response;
+
 class UserController
 {
-    public static function getAllUsers() {}
-    public static function getUserById() {}
-    public static function addUser() {}
-    public static function updateUser() {}
-    public static function removeUser() {}
+    public static function getAllUsers(Request $req, Response $res) {}
+    public static function getUserById(Request $req, Response $res, string $id) {}
+    public static function addUser(Request $req, Response $res) {}
+    public static function updateUser(Request $req, Response $res, string $id) {}
+    public static function removeUser(Request $req, Response $res, string $id) {}
 }
 
