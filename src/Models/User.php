@@ -24,7 +24,7 @@ class User
     /** 
      * @return array{id: int, username: string, email: string, password: string} | array{} 
      */
-    public function getById(string $id): array
+    public function getById(int $id): array
     {
         $sql = 'SELECT * FROM users WHERE id= ?';
 
@@ -47,7 +47,7 @@ class User
     }
 
     public function update(
-        string $id,
+        int $id,
         ?string $username = null,
         ?string $email = null,
         ?string $password = null,
@@ -72,7 +72,7 @@ class User
         ]);
     }
 
-    public function remove(string $id): bool
+    public function remove(int $id): bool
     {
         $sql = 'DELETE FROM users WHERE id= ?';
 
