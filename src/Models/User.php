@@ -10,7 +10,7 @@ class User
     /** 
      * @return array<int, array{id: int, username: string, email: string, password: string}> | array{} 
      */
-    public static function getAll(): array
+    public function getAll(): array
     {
         $sql = 'SELECT * FROM users';
 
@@ -24,7 +24,7 @@ class User
     /** 
      * @return array{id: int, username: string, email: string, password: string} | array{} 
      */
-    public static function getById(string $id): array
+    public function getById(string $id): array
     {
         $sql = 'SELECT * FROM users WHERE id= ?';
 
@@ -36,7 +36,7 @@ class User
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public static function create(string $username, string $email, string $password): bool
+    public function create(string $username, string $email, string $password): bool
     {
         $sql = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
 
@@ -46,7 +46,7 @@ class User
         return $stmt->execute([$username, $email, $password]);
     }
 
-    public static function update(
+    public function update(
         string $id,
         ?string $username = null,
         ?string $email = null,
@@ -72,7 +72,7 @@ class User
         ]);
     }
 
-    public static function remove(string $id): bool
+    public function remove(string $id): bool
     {
         $sql = 'DELETE FROM users WHERE id= ?';
 
