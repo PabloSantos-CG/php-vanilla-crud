@@ -52,7 +52,7 @@ Após a inicialização dos contêineres, a aplicação estará disponível em:
 
 ---
 ## Esboço da Estrutura do Projeto
-![Esboço](public/esboço.png)
+![Esboço](public/estrutura-do-projeto.png)
 
 ## Diagrama do Banco de Dados
 ![Esboço](public/Diagrama.png)
