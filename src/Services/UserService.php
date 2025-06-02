@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\database\Database;
 use App\Models\User;
+use App\Utils\Validate;
 use ErrorException;
+use ValueError;
 
 class UserService
 {
@@ -31,7 +33,7 @@ class UserService
         return $result;
     }
 
-    private function checkUser(?int $id = null, ...$atritubes)
+    private function checkUserExists(?int $id = null, ...$atritubes)
     {
         if (!$id) {
             $sql = 'SELECT * FROM users WHERE username= ? AND email= ? AND password= ?';
@@ -47,21 +49,27 @@ class UserService
         $result = $stmt->fetch();
 
         if (!$result) {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     //implementar try catch junto com erros mais específicos
     public function createUser(string $username, string $email, string $password)
     {
-        $userExists = $this->checkUser($username, $email, $password);
+        $userExists = $this->checkUserExists($username, $email, $password);
         if (!$userExists) {
             throw new ErrorException('Usuário já existe');
         }
 
-        $newUser = $this->user->create($username, $email, $password);
+        $passwd_is_valid = Validate::is_password_valid($password);
+        if (!$passwd_is_valid) {
+            throw new ValueError('Senha deve ser mais do que 6 e menor do que 12');
+        }
+
+        $hash = \password_hash($password, \PASSWORD_DEFAULT);
+        $newUser = $this->user->create($username, $email, $hash);
 
         if (!$newUser) {
             throw new ErrorException('Não foi possível concluir a operação');
@@ -76,7 +84,7 @@ class UserService
         ?string $email = null,
         ?string $password = null,
     ) {
-        $userExists = $this->checkUser($id);
+        $userExists = $this->checkUserExists($id);
 
         if (!$userExists) {
             throw new ErrorException('Usuário inexistente.');
@@ -97,7 +105,7 @@ class UserService
 
     public function removeUser(int $id)
     {
-        $userExists = $this->checkUser($id);
+        $userExists = $this->checkUserExists($id);
 
         if (!$userExists) {
             throw new ErrorException('Usuário inexistente.');
