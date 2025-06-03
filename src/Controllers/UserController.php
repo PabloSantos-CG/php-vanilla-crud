@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Requeste\Request;
-use App\Response\Response;
+use App\Http\Request;
+use App\Http\Response;
 use App\Services\UserService;
 use App\Utils\Validate;
 

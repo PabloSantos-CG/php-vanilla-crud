@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Response\Response;
+use App\Http\Response;
 
 class NotFoundController
 {
