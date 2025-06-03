@@ -2,8 +2,8 @@
 
 namespace App\Utils;
 
-use App\Requeste\Request;
-use App\Response\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 class Validate {
     public static function isPasswordValid(string $passwd) {
