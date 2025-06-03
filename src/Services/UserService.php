@@ -22,8 +22,19 @@ class UserService
         return $this->user->getAll();
     }
 
+    private function idValidate(string $id): int
+    {
+        $id = \filter_var($id, \FILTER_VALIDATE_INT);
+        if (!$id) {
+            throw new ValueError('ID inválido');
+        }
+        return $id;
+    }
+
     public function getUserById(string $id)
     {
+        $id = $this->idValidate($id);
+
         $result = $this->user->getById($id);
 
         if (!$result) {
@@ -63,8 +74,8 @@ class UserService
             throw new ErrorException('Usuário já existe');
         }
 
-        $passwd_is_valid = Validate::is_password_valid($password);
-        if (!$passwd_is_valid) {
+        $passwordIsValid = Validate::isPasswordValid($password);
+        if (!$passwordIsValid) {
             throw new ValueError('Senha deve ser mais do que 6 e menor do que 12');
         }
 
@@ -105,6 +116,7 @@ class UserService
 
     public function removeUser(int $id)
     {
+        $id = $this->idValidate($id);
         $userExists = $this->checkUserExists($id);
 
         if (!$userExists) {

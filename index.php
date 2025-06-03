@@ -34,23 +34,27 @@ use App\Database\Database;
 
 // echo '<pre>';
 // echo print_r($matches[1]);
+$path = 'users/{id}';
 
-// if (isset($_GET['url'])) {
-//     $url = $_GET['url'];
-//     $pattern = '#' . '^users/(\d+)$' . '#';
-//     preg_match($pattern, $url, $matches);
-//     array_shift($matches);
-//     [$id] = $matches;
+if (isset($_GET['url'])) {
+    // \{[^}]+\}
+    $pattern = '#^' . preg_replace('#\{[^}]+\}#', '(\d+)', $path) . '$#';
+    echo $pattern;
+    $url = $_GET['url'];
+    // $pattern = '#' . '^users/(\d+)$' . '#';
+    preg_match($pattern, $url, $matches);
+    array_shift($matches);
+    [$id] = $matches;
 
-//     echo '<pre>';
-//     echo "$id";
-// }
-
-
-class T {
-    public static function t($arg1) {
-        echo "$arg1";
-    }
+    echo '<pre>';
+    echo "$id";
 }
 
-echo T::class::t(22);
+
+// class T {
+//     public static function t($arg1) {
+//         echo "$arg1";
+//     }
+// }
+
+// echo T::class::t(22);
