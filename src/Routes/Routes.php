@@ -2,7 +2,7 @@
 
 namespace App\Routes;
 
-    
+
 class Routes
 {
     private static array $routes = [];
@@ -49,13 +49,5 @@ class Routes
     public static function routes(): array
     {
         return Routes::$routes;
-    }
-
-    public static function ping()
-    {
-        if (isset($_GET['url']) && $_GET['url'] === 'ping') {
-            header('Content-Type: application/json');
-            echo json_encode(['ping' => 'pong']);
-        }
     }
 }
