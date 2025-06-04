@@ -2,9 +2,8 @@
 
 namespace App\Services;
 
-use App\database\Database;
+use App\Models\Database;
 use App\Models\User;
-use App\Utils\Validate;
 use ErrorException;
 use ValueError;
 
