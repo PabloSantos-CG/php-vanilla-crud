@@ -21,7 +21,7 @@ class UserController
         Validate::methodIsAllowed($req, $res, 'GET');
 
         $data = $userService->getAllUsers();
-        $res::json($data);
+        $res->json($data);
     }
 
     public static function getUserById(
@@ -33,7 +33,7 @@ class UserController
         Validate::methodIsAllowed($req, $res, 'GET');
 
         $data = $userService->getUserById($id);
-        $res::json($data);
+        $res->json($data);
     }
 
     public static function createUser(
@@ -43,17 +43,17 @@ class UserController
     ) {
         Validate::methodIsAllowed($req, $res, 'POST');
 
-        if (\count($req::body()) != 3) {
-            $res::json([
+        if (\count($req->body()) != 3) {
+            $res->json([
                 'status' => 'error',
                 'message' => 'Quantidade de argumentos inválida',
             ]);
         }
 
-        ['username' => $username, 'email' => $email, 'password' => $password] = $req::body();
+        ['username' => $username, 'email' => $email, 'password' => $password] = $req->body();
 
         $userService->createUser($username, $email, $password);
-        $res::json();
+        $res->json();
     }
 
     public static function updateUser(
@@ -64,10 +64,10 @@ class UserController
     ) {
         Validate::methodIsAllowed($req, $res, 'PUT');
 
-        $data = $req::body();
+        $data = $req->body();
 
         if (count($data) > 3 || count($data) == 0) {
-            $res::json([
+            $res->json([
                 'status' => 'error',
                 'message' => 'Foi informado uma quantidade de parâmetros maior do que o necessário',
             ]);
@@ -82,14 +82,14 @@ class UserController
         }
 
         if (count($keysMatch) == 0) {
-            $res::json([
+            $res->json([
                 'status' => 'error',
                 'message' => 'Quantidade de argumentos insuficiente',
             ]);
         }
 
         $result = $userService->updateUser($id, ...$data);
-        if ($result) $res::json();
+        if ($result) $res->json();
     }
 
     public static function removeUser(
@@ -101,6 +101,6 @@ class UserController
         Validate::methodIsAllowed($req, $res, 'DELETE');
 
         $result = $userService->removeUser($id);
-        if ($result) $res::json();
+        if ($result) $res->json();
     }
 }
