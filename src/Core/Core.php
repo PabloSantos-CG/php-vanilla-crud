@@ -21,21 +21,20 @@ class Core
             $url .= $_GET['url'];
         }
 
-        $routeNotFound = false;
-
+        $routeNotFound = true;
         foreach ($routes as $route) {
-
             $pattern = '#^' . preg_replace('#\{[^}]+\}#', '(\d+)', $route['path']) . '$#';
 
             if (preg_match($pattern, $url, $matches)) {
                 array_shift($matches);
                 call_user_func($route['controller'], $matches);
 
-                $routeNotFound = true;
+                $routeNotFound = false;
+                break;
             }
         }
 
-        if (!$routeNotFound) {
+        if ($routeNotFound) {
             NotFoundController::index();
         }
     }
