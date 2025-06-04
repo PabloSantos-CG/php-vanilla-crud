@@ -66,6 +66,13 @@ class UserService
         return true;
     }
 
+    private function checkPasswordForCreateUser(string $password): bool {
+        if (\strlen($password) < 6 || strlen($password) > 12) {
+            return false;
+        }
+
+        return true;
+    }
     //implementar try catch junto com erros mais específicos
     public function createUser(string $username, string $email, string $password)
     {
@@ -74,7 +81,7 @@ class UserService
             throw new ErrorException('Usuário já existe');
         }
 
-        $passwordIsValid = Validate::isPasswordValid($password);
+        $passwordIsValid = $this->checkPasswordForCreateUser($password);
         if (!$passwordIsValid) {
             throw new ValueError('Senha deve ser mais do que 6 e menor do que 12');
         }

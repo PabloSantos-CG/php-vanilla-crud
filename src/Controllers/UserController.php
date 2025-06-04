@@ -13,12 +13,22 @@ use App\Utils\Validate;
 
 class UserController
 {
+    private static function checkIfMethodAllowed(Request $req, Response $res, string $requiredMethod)
+    {
+        if ($req->method() != $requiredMethod) {
+            $res->json([
+                'status' => 'error',
+                'message' => 'Invalid Method',
+            ], 404);
+        }
+    }
+
     public static function getAllUsers(
         Request $req,
         Response $res,
         UserService $userService
     ) {
-        Validate::methodIsAllowed($req, $res, 'GET');
+        self::checkIfMethodAllowed($req, $res, 'GET');
 
         $data = $userService->getAllUsers();
         $res->json($data);
@@ -30,7 +40,7 @@ class UserController
         string $id,
         UserService $userService,
     ) {
-        Validate::methodIsAllowed($req, $res, 'GET');
+        self::checkIfMethodAllowed($req, $res, 'GET');
 
         $data = $userService->getUserById($id);
         $res->json($data);
@@ -41,7 +51,7 @@ class UserController
         Response $res,
         UserService $userService,
     ) {
-        Validate::methodIsAllowed($req, $res, 'POST');
+        self::checkIfMethodAllowed($req, $res, 'POST');
 
         if (\count($req->body()) != 3) {
             $res->json([
@@ -62,7 +72,7 @@ class UserController
         string $id,
         UserService $userService,
     ) {
-        Validate::methodIsAllowed($req, $res, 'PUT');
+        self::checkIfMethodAllowed($req, $res, 'PUT');
 
         $data = $req->body();
 
@@ -98,7 +108,7 @@ class UserController
         string $id,
         UserService $userService,
     ) {
-        Validate::methodIsAllowed($req, $res, 'DELETE');
+        self::checkIfMethodAllowed($req, $res, 'DELETE');
 
         $result = $userService->removeUser($id);
         if ($result) $res->json();
