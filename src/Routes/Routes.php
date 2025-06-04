@@ -45,7 +45,6 @@ class Routes
         ];
     }
 
-
     public static function routes(): array
     {
         return Routes::$routes;
