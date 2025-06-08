@@ -51,8 +51,8 @@ Após a inicialização dos contêineres, a aplicação estará disponível em:
 [http://localhost:8080](https://www.google.com/search?q=http://localhost:8080)
 
 ---
-## Esboço da Estrutura do Projeto
-![Esboço](public/estrutura-do-projeto.png)
+<!-- ## Esboço da Estrutura do Projeto -->
+<!-- ![Esboço](public/estrutura-do-projeto.png) -->
 
-## Diagrama do Banco de Dados
-![Esboço](public/Diagrama.png)
+<!-- ## Diagrama do Banco de Dados -->
+<!-- ![Esboço](public/Diagrama.png) -->
