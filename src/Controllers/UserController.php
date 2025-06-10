@@ -13,7 +13,11 @@ use App\Utils\Validate;
 
 class UserController
 {
-    private static function checkIfMethodAllowed(Request $req, Response $res, string $requiredMethod)
+    private static function checkIfMethodAllowed(
+        Request $req,
+        Response $res,
+        string $requiredMethod,
+    )
     {
         if ($req->method() != $requiredMethod) {
             $res->json([
