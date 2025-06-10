@@ -19,6 +19,7 @@ class Core
 
         if (isset($_GET['url'])) {
             $url .= $_GET['url'];
+            $url = rtrim($url, '/');
         }
 
         $routeNotFound = true;
@@ -27,8 +28,8 @@ class Core
 
             if (preg_match($pattern, $url, $matches)) {
                 array_shift($matches);
-                call_user_func($route['controller'], $matches);
-
+                call_user_func($route['controller'], ...$matches);
+                
                 $routeNotFound = false;
                 break;
             }
