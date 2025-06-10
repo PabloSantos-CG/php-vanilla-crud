@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Http\Request;
 use App\Http\Response;
 use App\Services\UserService;
-use App\Utils\Validate;
+// use App\Utils\Validate;
 
 /**
  * pendente refatorar para implementar try catch e melhorar validações
@@ -13,27 +13,25 @@ use App\Utils\Validate;
 
 class UserController
 {
-    private static function checkIfMethodAllowed(
-        Request $req,
-        Response $res,
-        string $requiredMethod,
-    )
-    {
-        if ($req->method() != $requiredMethod) {
-            $res->json([
-                'status' => 'error',
-                'message' => 'Invalid Method',
-            ], 404);
-        }
-    }
+    // private static function checkIfMethodAllowed(
+    //     Request $req,
+    //     Response $res,
+    //     string $requiredMethod,
+    // ) {
+    //     if ($req->method() != $requiredMethod) {
+    //         // echo 'req recebida ' . $req->method() . 'palavra-chave passada como arg: ' . $requiredMethod;
+    //         $res->json([
+    //             'status' => 'error',
+    //             'message' => 'Invalid Method',
+    //         ], 404);
+    //     }
+    // }
 
     public static function getAllUsers(
         Request $req,
         Response $res,
         UserService $userService
     ) {
-        self::checkIfMethodAllowed($req, $res, 'GET');
-
         $data = $userService->getAllUsers();
         $res->json($data);
     }
@@ -44,8 +42,6 @@ class UserController
         string $id,
         UserService $userService,
     ) {
-        self::checkIfMethodAllowed($req, $res, 'GET');
-
         $data = $userService->getUserById($id);
         $res->json($data);
     }
@@ -55,8 +51,6 @@ class UserController
         Response $res,
         UserService $userService,
     ) {
-        self::checkIfMethodAllowed($req, $res, 'POST');
-
         if (\count($req->body()) != 3) {
             $res->json([
                 'status' => 'error',
@@ -76,14 +70,17 @@ class UserController
         string $id,
         UserService $userService,
     ) {
-        self::checkIfMethodAllowed($req, $res, 'PUT');
-
         $data = $req->body();
 
-        if (count($data) > 3 || count($data) == 0) {
+        if (count($data) > 3) {
             $res->json([
                 'status' => 'error',
                 'message' => 'Foi informado uma quantidade de parâmetros maior do que o necessário',
+            ]);
+        } elseif (count($data) == 0) {
+            $res->json([
+                'status' => 'error',
+                'message' => 'Foi informado uma quantidade de parâmetros menor do que o necessário',
             ]);
         }
 
@@ -112,8 +109,6 @@ class UserController
         string $id,
         UserService $userService,
     ) {
-        self::checkIfMethodAllowed($req, $res, 'DELETE');
-
         $result = $userService->removeUser($id);
         if ($result) $res->json();
     }
