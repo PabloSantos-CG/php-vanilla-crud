@@ -32,17 +32,16 @@ class UserService
         return $result;
     }
 
-    private function checkUserExists(?string $id = null, ...$atritubes)
+    private function checkUserExists(?string $id, ...$atritubes)
     {
         if (!$id) {
-            $sql = 'SELECT * FROM users WHERE username= ? AND email= ? AND password= ?';
+            $sql = 'SELECT * FROM users WHERE username= ? OR email= ?';
         } else {
             $sql = 'SELECT * FROM users WHERE id= ?';
         }
 
         $pdo = Database::connect();
         $stmt = $pdo->prepare($sql);
-
         $id ? $stmt->execute([$id]) : $stmt->execute($atritubes);
 
         $result = $stmt->fetch();
@@ -65,7 +64,7 @@ class UserService
     //implementar try catch junto com erros mais específicos
     public function createUser(string $username, string $email, string $password)
     {
-        $userExists = $this->checkUserExists($username, $email);
+        $userExists = $this->checkUserExists(null, $username, $email);
         if ($userExists) {
             throw new ErrorException('Usuário já existe');
         }
@@ -101,7 +100,7 @@ class UserService
             throw new ErrorException('Necessário informar um ou mais atributos.');
         }
 
-        $hash = \password_hash($password, \PASSWORD_DEFAULT);
+        $hash = $password ? \password_hash($password, \PASSWORD_DEFAULT) : null;
         $result = $this->user->update($id, $username, $email, $hash);
 
         if (!$result) {
