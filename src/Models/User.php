@@ -24,7 +24,7 @@ class User
     /** 
      * @return array{id: int, username: string, email: string, password: string} | array{} 
      */
-    public function getById(string $id): array
+    public function getById(string $id): array | bool
     {
         $sql = 'SELECT * FROM users WHERE id= ?';
 
