@@ -19,7 +19,7 @@ class Core
     {
         $req = new Request();
         $res = new Response();
-        // echo $req->method() . $route['method'];
+
         if ($req->method() !== $route['method']) {
             $res->json([
                 'status' => 'error',
