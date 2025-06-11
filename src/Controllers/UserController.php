@@ -13,20 +13,6 @@ use App\Services\UserService;
 
 class UserController
 {
-    // private static function checkIfMethodAllowed(
-    //     Request $req,
-    //     Response $res,
-    //     string $requiredMethod,
-    // ) {
-    //     if ($req->method() != $requiredMethod) {
-    //         // echo 'req recebida ' . $req->method() . 'palavra-chave passada como arg: ' . $requiredMethod;
-    //         $res->json([
-    //             'status' => 'error',
-    //             'message' => 'Invalid Method',
-    //         ], 404);
-    //     }
-    // }
-
     public static function getAllUsers(
         Request $req,
         Response $res,
@@ -57,11 +43,14 @@ class UserController
                 'message' => 'Quantidade de argumentos inválida',
             ]);
         }
-
+        
         ['username' => $username, 'email' => $email, 'password' => $password] = $req->body();
 
         $userService->createUser($username, $email, $password);
-        $res->json();
+        $res->json([
+            'status' => 'success',
+            'message' => 'created user',
+        ], 201);
     }
 
     public static function updateUser(
