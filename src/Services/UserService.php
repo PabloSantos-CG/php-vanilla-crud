@@ -21,19 +21,8 @@ class UserService
         return $this->user->getAll();
     }
 
-    private function idValidate(string $id): int
-    {
-        $id = \filter_var($id, \FILTER_VALIDATE_INT);
-        if (!$id) {
-            throw new ValueError('ID inválido');
-        }
-        return $id;
-    }
-
     public function getUserById(string $id)
     {
-        $id = $this->idValidate($id);
-
         $result = $this->user->getById($id);
 
         if (!$result) {
@@ -43,7 +32,7 @@ class UserService
         return $result;
     }
 
-    private function checkUserExists(?int $id = null, ...$atritubes)
+    private function checkUserExists(?string $id = null, ...$atritubes)
     {
         if (!$id) {
             $sql = 'SELECT * FROM users WHERE username= ? AND email= ? AND password= ?';
@@ -65,7 +54,8 @@ class UserService
         return true;
     }
 
-    private function checkPasswordForCreateUser(string $password): bool {
+    private function checkPasswordForCreateUser(string $password): bool
+    {
         if (\strlen($password) < 6 || strlen($password) > 12) {
             return false;
         }
@@ -75,14 +65,14 @@ class UserService
     //implementar try catch junto com erros mais específicos
     public function createUser(string $username, string $email, string $password)
     {
-        $userExists = $this->checkUserExists($username, $email, $password);
-        if (!$userExists) {
+        $userExists = $this->checkUserExists($username, $email);
+        if ($userExists) {
             throw new ErrorException('Usuário já existe');
         }
 
         $passwordIsValid = $this->checkPasswordForCreateUser($password);
         if (!$passwordIsValid) {
-            throw new ValueError('Senha deve ser mais do que 6 e menor do que 12');
+            throw new ValueError('Senha deve ser maior do que 6 e menor do que 12');
         }
 
         $hash = \password_hash($password, \PASSWORD_DEFAULT);
@@ -96,7 +86,7 @@ class UserService
     }
 
     public function updateUser(
-        int $id,
+        string $id,
         ?string $username = null,
         ?string $email = null,
         ?string $password = null,
@@ -111,7 +101,8 @@ class UserService
             throw new ErrorException('Necessário informar um ou mais atributos.');
         }
 
-        $result = $this->user->update($username, $email, $password);
+        $hash = \password_hash($password, \PASSWORD_DEFAULT);
+        $result = $this->user->update($id, $username, $email, $hash);
 
         if (!$result) {
             throw new ErrorException('Não foi possível concluir a operação');
@@ -120,9 +111,8 @@ class UserService
         return true;
     }
 
-    public function removeUser(int $id)
+    public function removeUser(string $id)
     {
-        $id = $this->idValidate($id);
         $userExists = $this->checkUserExists($id);
 
         if (!$userExists) {
