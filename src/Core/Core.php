@@ -3,8 +3,7 @@
 namespace App\Core;
 
 use App\Controllers\NotFoundController;
-use App\Http\Request;
-use App\Http\Response;
+
 
 class Core
 {
@@ -17,15 +16,10 @@ class Core
      */
     private static function methodAllowed($route)
     {
-        $req = new Request();
-        $res = new Response();
-
-        if ($req->method() !== $route['method']) {
-            $res->json([
-                'status' => 'error',
-                'message' => 'método de requisição inválido',
-            ], 404);
+        if ($_SERVER['REQUEST_METHOD'] !== $route['method']) {
+            return false;
         }
+        return true;
     }
 
     /**
@@ -47,11 +41,9 @@ class Core
         $routeNotFound = true;
 
         foreach ($routes as $route) {
-
             $pattern = '#^' . preg_replace('#\{[^}]+\}#', '(\d+)', $route['path']) . '$#';
 
-            if (preg_match($pattern, $url, $matches)) {
-                self::methodAllowed($route);
+            if (preg_match($pattern, $url, $matches) && self::methodAllowed($route)) {
                 array_shift($matches);
                 call_user_func($route['controller'], ...$matches);
 
